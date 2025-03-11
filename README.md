@@ -24,7 +24,7 @@ For other build tools, see [this page](https://central.sonatype.com/artifact/org
 
 ## Getting Started
 
-Prep your data in the format `user_id, item_id, value`
+Prep your data in the format `userId, itemId, value`
 
 ```java
 import org.ankane.disco.Dataset;
