@@ -1,12 +1,10 @@
 # Disco Java
 
-🔥 Recommendations for Java using collaborative filtering
+:fire: Recommendations for Java using collaborative filtering
 
 - Supports user-based and item-based recommendations
 - Works with explicit and implicit feedback
 - Uses high-performance matrix factorization
-
-🎉 Zero dependencies
 
 [![Build Status](https://github.com/ankane/disco-java/actions/workflows/build.yml/badge.svg)](https://github.com/ankane/disco-java/actions)
 
