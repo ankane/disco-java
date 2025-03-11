@@ -112,7 +112,7 @@ recommender.itemRecs("Star Wars (1977)", 5);
 
 Save recommendations to your database.
 
-Alternatively, you can store only the factors and use a library like [pgvector-java](https://github.com/pgvector/pgvector-java).
+Alternatively, you can store only the factors and use a library like [pgvector-java](https://github.com/pgvector/pgvector-java). See an [example](https://github.com/pgvector/pgvector-java/blob/master/examples/disco/src/main/java/com/example/Example.java).
 
 ## Algorithms
 
