@@ -142,7 +142,7 @@ public class RecommenderTest {
     }
 
     @Test
-    void TestCallback() {
+    void testCallback() {
         Dataset<Integer, Integer> data = new Dataset<>();
         data.add(1, 1, 5.0f);
 
@@ -153,6 +153,15 @@ public class RecommenderTest {
             .fitExplicit(data);
 
         assertEquals(20, iterations.intValue());
+    }
+
+    @Test
+    void testNoTrainingData() {
+        Dataset<Integer, Integer> data = new Dataset<>();
+        Recommender<Integer, Integer> recommender = Recommender.fitExplicit(data);
+        assertTrue(recommender.userIds().isEmpty());
+        assertTrue(recommender.itemIds().isEmpty());
+        assertEquals(Float.NaN, recommender.predict(1, 1));
     }
 
     <T> List<T> getIds(List<Rec<T>> recs) {
