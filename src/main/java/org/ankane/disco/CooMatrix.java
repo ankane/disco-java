@@ -10,7 +10,7 @@ class CooMatrix {
     public float[] values;
     int size;
 
-    public CooMatrix(int size) {
+    CooMatrix(int size) {
         this.rowIndices = new int[size];
         this.colIndices = new int[size];
         this.values = new float[size];

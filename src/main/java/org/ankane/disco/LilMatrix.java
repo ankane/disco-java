@@ -9,7 +9,7 @@ import java.util.List;
 class LilMatrix {
     public List<List<SparseRow>> rowList;
 
-    public LilMatrix() {
+    LilMatrix() {
         this.rowList = new ArrayList<>();
     }
 
