@@ -62,9 +62,10 @@ public class Recommender<T, U> {
         IdMap<U> itemMap = new IdMap<>();
         List<Set<Integer>> rated = new ArrayList<>();
 
-        int[] rowInds = new int[trainSet.size()];
-        int[] colInds = new int[trainSet.size()];
-        float[] values = new float[trainSet.size()];
+        int capacity = implicit ? 0 : trainSet.size();
+        int[] rowInds = new int[capacity];
+        int[] colInds = new int[capacity];
+        float[] values = new float[capacity];
 
         List<List<SparseRow>> cui = new ArrayList<>();
         List<List<SparseRow>> ciu = new ArrayList<>();
