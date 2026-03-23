@@ -66,6 +66,7 @@ public class Recommender<T, U> {
         int[] rowInds = new int[capacity];
         int[] colInds = new int[capacity];
         float[] values = new float[capacity];
+        float sum = 0;
 
         LilMatrix cui = new LilMatrix();
         LilMatrix ciu = new LilMatrix();
@@ -84,6 +85,7 @@ public class Recommender<T, U> {
                 rowInds[j] = u;
                 colInds[j] = i;
                 values[j] = rating.value;
+                sum += rating.value;
             }
 
             if (u == rated.size()) {
@@ -95,14 +97,7 @@ public class Recommender<T, U> {
         int users = userMap.size();
         int items = itemMap.size();
 
-        float globalMean = 0.0f;
-        if (!implicit) {
-            for (int i = 0; i < values.length; i++) {
-                globalMean += values[i];
-            }
-            globalMean /= values.length;
-        }
-
+        float globalMean = implicit ? 0.0f : sum / values.length;
         float endRange = implicit ? 0.01f : 0.1f;
 
         Random prng = options.seed.map(s -> new Random(s)).orElseGet(() -> new Random());
