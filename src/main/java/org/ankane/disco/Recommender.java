@@ -93,7 +93,7 @@ public class Recommender<T, U> {
                 values[j] = rating.value;
             }
 
-            if (u == userMap.size() - 1) {
+            if (u == rated.size()) {
                 rated.add(new HashSet<>());
             }
             rated.get(u).add(i);
