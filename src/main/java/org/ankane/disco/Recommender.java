@@ -56,8 +56,6 @@ public class Recommender<T, U> {
     }
 
     static <T, U> Recommender<T, U> fit(Dataset<T, U> trainSet, RecommenderBuilder options, boolean implicit) {
-        int factors = options.factors;
-
         IdMap<T> userMap = new IdMap<>();
         IdMap<U> itemMap = new IdMap<>();
         List<Set<Integer>> rated = new ArrayList<>();
@@ -94,13 +92,13 @@ public class Recommender<T, U> {
             rated.get(u).add(i);
         }
 
+        float globalMean = implicit ? 0.0f : sum / values.length;
+
         int users = userMap.size();
         int items = itemMap.size();
-
-        float globalMean = implicit ? 0.0f : sum / values.length;
-        float endRange = implicit ? 0.01f : 0.1f;
-
+        int factors = options.factors;
         Random prng = options.seed.map(s -> new Random(s)).orElseGet(() -> new Random());
+        float endRange = implicit ? 0.01f : 0.1f;
 
         float[][] userFactors = createFactors(users, factors, prng, endRange);
         float[][] itemFactors = createFactors(items, factors, prng, endRange);
