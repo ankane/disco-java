@@ -7,16 +7,16 @@ import java.util.List;
  * A list of lists (LIL) matrix.
  */
 class LilMatrix {
-    public List<List<SparseRow>> row_list;
+    public List<List<SparseRow>> rowList;
 
     public LilMatrix() {
-        this.row_list = new ArrayList<>();
+        this.rowList = new ArrayList<>();
     }
 
-    public void add(int row_index, int col_index, float value) {
-        if (row_index == this.row_list.size()) {
-            this.row_list.add(new ArrayList<>());
+    public void add(int rowIndex, int colIndex, float value) {
+        if (rowIndex == this.rowList.size()) {
+            this.rowList.add(new ArrayList<>());
         }
-        this.row_list.get(row_index).add(new SparseRow(col_index, value));
+        this.rowList.get(rowIndex).add(new SparseRow(colIndex, value));
     }
 }

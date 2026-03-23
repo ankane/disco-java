@@ -350,8 +350,8 @@ public class Recommender<T, U> {
             yty[i][i] += regularization;
         }
 
-        for (int u = 0; u < cui.row_list.size(); u++) {
-            List<SparseRow> rowVec = cui.row_list.get(u);
+        for (int u = 0; u < cui.rowList.size(); u++) {
+            List<SparseRow> rowVec = cui.rowList.get(u);
 
             // start from previous iteration
             float[] xi = x[u];
