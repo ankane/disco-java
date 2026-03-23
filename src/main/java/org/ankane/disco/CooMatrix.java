@@ -8,7 +8,7 @@ class CooMatrix {
     public int[] rowIndices;
     public int[] colIndices;
     public float[] values;
-    int size;
+    private int size;
 
     CooMatrix(int size) {
         this.rowIndices = new int[size];
