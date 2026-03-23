@@ -60,10 +60,8 @@ public class Recommender<T, U> {
         IdMap<U> itemMap = new IdMap<>();
         List<Set<Integer>> rated = new ArrayList<>();
 
-        int capacity = implicit ? 0 : trainSet.size();
-        int[] rowInds = new int[capacity];
-        int[] colInds = new int[capacity];
-        float[] values = new float[capacity];
+        int size = implicit ? 0 : trainSet.size();
+        CooMatrix trainData = new CooMatrix(size);
         float sum = 0;
 
         LilMatrix cui = new LilMatrix();
@@ -80,9 +78,7 @@ public class Recommender<T, U> {
                 cui.add(u, i, confidence);
                 ciu.add(i, u, confidence);
             } else {
-                rowInds[j] = u;
-                colInds[j] = i;
-                values[j] = rating.value;
+                trainData.add(u, i, rating.value);
                 sum += rating.value;
             }
 
@@ -92,7 +88,7 @@ public class Recommender<T, U> {
             rated.get(u).add(i);
         }
 
-        float globalMean = implicit ? 0.0f : sum / values.length;
+        float globalMean = implicit ? 0.0f : sum / trainData.size();
 
         int users = userMap.size();
         int items = itemMap.size();
@@ -144,13 +140,14 @@ public class Recommender<T, U> {
                 double trainLoss = 0.0;
 
                 // shuffle for each iteration
-                for (int j : sample(prng, trainSet.size())) {
-                    int u = rowInds[j];
-                    int v = colInds[j];
+                for (int j : sample(prng, trainData.size())) {
+                    int u = trainData.rowIndices[j];
+                    int v = trainData.colIndices[j];
+                    float r = trainData.values[j];
 
                     float[] pu = userFactors[u];
                     float[] qv = itemFactors[v];
-                    float e = values[j] - dot(pu, qv);
+                    float e = r - dot(pu, qv);
 
                     // slow learner
                     float gHat = 0.0f;
@@ -201,7 +198,7 @@ public class Recommender<T, U> {
                 }
 
                 if (options.callback.isPresent()) {
-                    trainLoss = Math.sqrt(trainLoss / trainSet.size());
+                    trainLoss = Math.sqrt(trainLoss / trainData.size());
                     FitInfo info = new FitInfo(iteration + 1, (float) trainLoss);
                     options.callback.get().accept(info);
                 }
