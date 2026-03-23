@@ -335,8 +335,6 @@ public class Recommender<T, U> {
                 }
                 yty[i][j] = sum;
             }
-        }
-        for (int i = 0; i < factors; i++) {
             yty[i][i] += regularization;
         }
 
