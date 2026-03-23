@@ -18,14 +18,14 @@ import java.util.Set;
 public class Recommender<T, U> {
     private IdMap<T> userMap;
     private IdMap<U> itemMap;
-    private Map<Integer, Set<Integer>> rated;
+    private List<Set<Integer>> rated;
     private float globalMean;
     private float[][] userFactors;
     private float[][] itemFactors;
     private float[] userNorms;
     private float[] itemNorms;
 
-    private Recommender(IdMap<T> userMap, IdMap<U> itemMap, Map<Integer, Set<Integer>> rated, float globalMean, float[][] userFactors, float[][] itemFactors) {
+    private Recommender(IdMap<T> userMap, IdMap<U> itemMap, List<Set<Integer>> rated, float globalMean, float[][] userFactors, float[][] itemFactors) {
         this.userMap = userMap;
         this.itemMap = itemMap;
         this.rated = rated;
@@ -60,7 +60,7 @@ public class Recommender<T, U> {
 
         IdMap<T> userMap = new IdMap<>();
         IdMap<U> itemMap = new IdMap<>();
-        Map<Integer, Set<Integer>> rated = new HashMap<>();
+        List<Set<Integer>> rated = new ArrayList<>();
 
         int[] rowInds = new int[trainSet.size()];
         int[] colInds = new int[trainSet.size()];
@@ -93,7 +93,10 @@ public class Recommender<T, U> {
                 values[j] = rating.value;
             }
 
-            rated.computeIfAbsent(u, k -> new HashSet<>()).add(i);
+            if (u == userMap.size() - 1) {
+                rated.add(new HashSet<>());
+            }
+            rated.get(u).add(i);
         }
 
         int users = userMap.size();
