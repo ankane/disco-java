@@ -67,8 +67,8 @@ public class Recommender<T, U> {
         int[] colInds = new int[capacity];
         float[] values = new float[capacity];
 
-        List<List<SparseRow>> cui = new ArrayList<>();
-        List<List<SparseRow>> ciu = new ArrayList<>();
+        LilMatrix cui = new LilMatrix();
+        LilMatrix ciu = new LilMatrix();
 
         for (int j = 0; j < trainSet.data.size(); j++) {
             Rating<T, U> rating = trainSet.data.get(j);
@@ -77,17 +77,9 @@ public class Recommender<T, U> {
             int i = itemMap.add(rating.itemId);
 
             if (implicit) {
-                if (u == cui.size()) {
-                    cui.add(new ArrayList<>());
-                }
-
-                if (i == ciu.size()) {
-                    ciu.add(new ArrayList<>());
-                }
-
                 float confidence = 1.0f + options.alpha * rating.value;
-                cui.get(u).add(new SparseRow(i, confidence));
-                ciu.get(i).add(new SparseRow(u, confidence));
+                cui.add(u, i, confidence);
+                ciu.add(i, u, confidence);
             } else {
                 rowInds[j] = u;
                 colInds[j] = i;
@@ -340,7 +332,7 @@ public class Recommender<T, U> {
         return this.globalMean;
     }
 
-    private static void leastSquaresCg(List<List<SparseRow>> cui, float[][] x, float[][] y, float regularization, int factors) {
+    private static void leastSquaresCg(LilMatrix cui, float[][] x, float[][] y, float regularization, int factors) {
         int cgSteps = 3;
 
         // calculate YtY
@@ -358,8 +350,8 @@ public class Recommender<T, U> {
             yty[i][i] += regularization;
         }
 
-        for (int u = 0; u < cui.size(); u++) {
-            List<SparseRow> rowVec = cui.get(u);
+        for (int u = 0; u < cui.row_list.size(); u++) {
+            List<SparseRow> rowVec = cui.row_list.get(u);
 
             // start from previous iteration
             float[] xi = x[u];
